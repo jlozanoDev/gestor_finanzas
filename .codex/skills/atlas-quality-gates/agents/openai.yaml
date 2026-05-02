@@ -1,4 +1,0 @@
-interface:
-  display_name: "Atlas Quality Gates"
-  short_description: "Validar tooling, tests y CI"
-  default_prompt: "Use $atlas-quality-gates to verify or update the quality pipeline in Atlas Finanzas."

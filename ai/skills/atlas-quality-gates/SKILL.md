@@ -12,7 +12,7 @@ description: Validate and maintain the quality toolchain of Atlas Finanzas. Use 
 3. Escalate to broader checks only when the changed surface justifies it.
 4. Keep the project scripts as the source of truth.
 
-Read [references/verification-matrix.md](/C:/Users/j-loz/Documents/01.Proyectos/gestor_finanzas/ai/skills/atlas-quality-gates/references/verification-matrix.md) before editing tooling or deciding what to verify.
+Read [references/verification-matrix.md](references/verification-matrix.md) before editing tooling or deciding what to verify.
 
 ## Preserve one way of working
 

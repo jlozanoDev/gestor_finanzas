@@ -1,64 +1,94 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { RouterLink, RouterView, useRoute } from 'vue-router';
+import { useDark, useToggle } from '@vueuse/core';
+import { Sun, Moon, LayoutDashboard, LogIn } from 'lucide-vue-next';
 
 import { env } from '@/shared/config/env';
 
 const route = useRoute();
 
 const navigation = [
-  { label: 'Inicio', to: { name: 'home' } },
-  { label: 'Acceso', to: { name: 'auth-sign-in' } },
+  { label: 'Inicio', to: { name: 'home' }, icon: LayoutDashboard },
+  { label: 'Acceso', to: { name: 'auth-sign-in' }, icon: LogIn },
 ];
 
 const pageLabel = computed(() => route.meta.title ?? env.appTitle);
+
+const isDark = useDark();
+const toggleDark = useToggle(isDark);
 </script>
 
 <template>
-  <div class="min-h-screen bg-slate-950 text-slate-100">
-    <div class="absolute inset-0 overflow-hidden">
+  <div class="min-h-screen bg-slate-50 text-slate-900 transition-colors duration-300 dark:bg-slate-950 dark:text-slate-100">
+    <!-- Decorative Background Effects -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
       <div
-        class="absolute left-0 top-0 h-72 w-72 rounded-full bg-brand-500/20 blur-3xl"
+        class="absolute left-0 top-0 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand-500/10 blur-3xl transition-opacity duration-300 dark:bg-white/10"
       />
       <div
-        class="absolute bottom-0 right-0 h-80 w-80 rounded-full bg-emerald-400/10 blur-3xl"
+        class="absolute bottom-0 right-0 h-[600px] w-[600px] translate-x-1/3 translate-y-1/3 rounded-full bg-emerald-400/10 blur-3xl transition-opacity duration-300 dark:bg-emerald-400/10"
       />
     </div>
 
-    <div class="relative mx-auto flex min-h-screen max-w-7xl flex-col px-6 py-8 sm:px-8">
+    <div class="relative z-10 mx-auto flex min-h-screen max-w-7xl flex-col px-4 py-6 sm:px-6 lg:px-8">
       <header
-        class="mb-10 flex flex-col gap-5 rounded-3xl border border-white/10 bg-white/5 px-6 py-5 shadow-soft backdrop-blur"
+        class="mb-8 flex flex-col gap-4 rounded-2xl border border-slate-200/50 bg-white/60 p-4 shadow-sm backdrop-blur-md transition-all duration-300 dark:border-white/10 dark:bg-white/5 dark:shadow-soft sm:flex-row sm:items-center sm:justify-between sm:px-6 sm:py-5"
       >
-        <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+        <div class="flex items-center gap-4">
+          <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-brand-500 text-white shadow-lg shadow-brand-500/30">
+            <LayoutDashboard class="h-6 w-6" stroke-width="1.5" />
+          </div>
           <div>
-            <p class="text-sm uppercase tracking-[0.24em] text-brand-200/80">
-              Frontend Blueprint
+            <p class="text-xs font-semibold uppercase tracking-widest text-brand-500 dark:text-slate-300">
+              Gestor de Finanzas
             </p>
-            <h1 class="text-2xl font-semibold text-white">
+            <h1 class="text-xl font-bold text-slate-800 dark:text-white">
               {{ env.appTitle }}
             </h1>
           </div>
+        </div>
 
-          <nav class="flex flex-wrap gap-3">
+        <div class="flex items-center justify-between gap-4 sm:justify-end">
+          <nav class="flex gap-2 overflow-x-auto">
             <RouterLink
               v-for="item in navigation"
               :key="item.label"
               :to="item.to"
-              class="rounded-full border border-white/10 px-4 py-2 text-sm font-medium text-slate-200 transition hover:border-brand-300 hover:text-white"
-              active-class="border-brand-300 bg-brand-500/10 text-white"
+              class="group flex items-center gap-2 whitespace-nowrap rounded-lg px-3 py-2 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-white/10 dark:hover:text-white"
+              active-class="bg-brand-50 text-brand-600 dark:bg-white/10 dark:text-slate-100"
             >
+              <component :is="item.icon" class="h-4 w-4" stroke-width="2" />
               {{ item.label }}
             </RouterLink>
           </nav>
-        </div>
+          
+          <div class="h-6 w-px bg-slate-200 dark:bg-white/10 hidden sm:block"></div>
 
-        <p class="text-sm text-slate-300">
-          {{ pageLabel }}
-        </p>
+          <button
+            @click="toggleDark()"
+            class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 dark:text-slate-400 dark:hover:bg-white/10 dark:hover:text-white dark:focus:ring-offset-slate-950"
+            aria-label="Toggle dark mode"
+          >
+            <Sun v-if="isDark" class="h-5 w-5" stroke-width="1.5" />
+            <Moon v-else class="h-5 w-5" stroke-width="1.5" />
+          </button>
+        </div>
       </header>
 
-      <main class="flex-1">
-        <RouterView />
+      <main class="flex-1 rounded-2xl border border-slate-200/50 bg-white/60 p-6 shadow-sm backdrop-blur-md transition-all duration-300 dark:border-white/10 dark:bg-white/5 dark:shadow-soft sm:p-8">
+        <header class="mb-8 border-b border-slate-200 pb-6 dark:border-white/10">
+          <h2 class="text-2xl font-bold text-slate-800 dark:text-white">
+            {{ pageLabel }}
+          </h2>
+          <p class="mt-2 text-sm text-slate-500 dark:text-slate-400">
+            Administra tus finanzas de manera inteligente.
+          </p>
+        </header>
+        
+        <div class="animate-in fade-in slide-in-from-bottom-4 duration-500">
+          <RouterView />
+        </div>
       </main>
     </div>
   </div>

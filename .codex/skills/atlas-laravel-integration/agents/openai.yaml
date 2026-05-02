@@ -1,4 +1,0 @@
-interface:
-  display_name: "Atlas Laravel Integration"
-  short_description: "Conectar frontend Vue con Laravel"
-  default_prompt: "Use $atlas-laravel-integration to wire Atlas Finanzas to a Laravel backend."

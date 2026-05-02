@@ -15,12 +15,12 @@ const props = withDefaults(defineProps<Props>(), {
 
 const classes = computed(() => {
   const base =
-    'inline-flex items-center justify-center rounded-2xl px-4 py-3 text-sm font-semibold transition focus:outline-none focus:ring-2 focus:ring-brand-300 focus:ring-offset-2 focus:ring-offset-slate-950 disabled:cursor-not-allowed disabled:opacity-60';
+    'inline-flex items-center justify-center rounded-2xl px-4 py-3 text-sm font-semibold transition focus:outline-none focus:ring-2 focus:ring-brand-300 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-slate-950 disabled:cursor-not-allowed disabled:opacity-60';
 
   const variants = {
-    primary: 'bg-brand-500 text-white hover:bg-brand-400',
-    secondary: 'border border-white/15 bg-white/5 text-white hover:bg-white/10',
-    ghost: 'text-slate-200 hover:bg-white/5',
+    primary: 'bg-brand-500 text-white hover:bg-brand-600 dark:bg-slate-200 dark:text-slate-900 dark:hover:bg-slate-300',
+    secondary: 'border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 dark:border-white/15 dark:bg-white/5 dark:text-white dark:hover:bg-white/10',
+    ghost: 'text-slate-600 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-white/5',
   };
 
   return `${base} ${variants[props.variant]}`;

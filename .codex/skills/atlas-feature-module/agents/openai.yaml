@@ -1,4 +1,0 @@
-interface:
-  display_name: "Atlas Feature Module"
-  short_description: "Crear o ampliar módulos por dominio"
-  default_prompt: "Use $atlas-feature-module to add or extend a domain feature in Atlas Finanzas."

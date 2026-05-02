@@ -12,7 +12,7 @@ description: Build or refine shared UI primitives and visual patterns for Atlas 
 3. Use Tailwind utilities directly unless the pattern is repeated enough to deserve abstraction.
 4. Preserve the current visual direction unless the task explicitly asks for a redesign.
 
-Read [references/ui-rules.md](/C:/Users/j-loz/Documents/01.Proyectos/gestor_finanzas/ai/skills/atlas-shared-ui/references/ui-rules.md) before adding or broadening any shared component.
+Read [references/ui-rules.md](references/ui-rules.md) before adding or broadening any shared component.
 
 ## Build shared components carefully
 

@@ -12,7 +12,7 @@ description: Connect Atlas Finanzas to a Laravel backend with clear frontend bou
 3. Keep domain-specific API calls inside each module service.
 4. Keep backend response shaping out of presentational components.
 
-Read [references/auth-and-api.md](/C:/Users/j-loz/Documents/01.Proyectos/gestor_finanzas/ai/skills/atlas-laravel-integration/references/auth-and-api.md) before adding auth or changing the HTTP contract.
+Read [references/auth-and-api.md](references/auth-and-api.md) before adding auth or changing the HTTP contract.
 
 ## Integration rules
 

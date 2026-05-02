@@ -22,7 +22,7 @@ description: Create or extend domain features in Atlas Finanzas using the reposi
 - Put reusable feature logic in `composables/`.
 - Put contracts in `types/`.
 
-Read [references/module-checklist.md](/C:/Users/j-loz/Documents/01.Proyectos/gestor_finanzas/ai/skills/atlas-feature-module/references/module-checklist.md) before creating a new module or moving files across boundaries.
+Read [references/module-checklist.md](references/module-checklist.md) before creating a new module or moving files across boundaries.
 
 ## Keep a thin view layer
 
