@@ -1,75 +1,159 @@
 <script setup lang="ts">
-import { env } from '@/shared/config/env';
-import { Layers, Rocket, Code, Layout, Blocks, CreditCard, PieChart, Activity } from 'lucide-vue-next';
+import { onMounted, computed } from 'vue';
+import { 
+  TrendingUp, 
+  Wallet, 
+  ArrowUpRight, 
+  ArrowDownRight, 
+  PieChart as PieChartIcon,
+  Activity
+} from 'lucide-vue-next';
+import { Doughnut } from 'vue-chartjs';
+import { 
+  Chart as ChartJS, 
+  Title, 
+  Tooltip, 
+  Legend, 
+  ArcElement, 
+  CategoryScale 
+} from 'chart.js';
+import { useDashboardStore } from '../stores/useDashboardStore';
+
+ChartJS.register(Title, Tooltip, Legend, ArcElement, CategoryScale);
+
+const dashboardStore = useDashboardStore();
+
+onMounted(() => {
+  dashboardStore.loadDashboardData();
+});
+
+const chartData = computed(() => ({
+  labels: dashboardStore.categoryDistribution.map(d => d.name),
+  datasets: [
+    {
+      backgroundColor: dashboardStore.categoryDistribution.map(d => d.color || '#cbd5e1'),
+      data: dashboardStore.categoryDistribution.map(d => d.value),
+      borderWidth: 0,
+      hoverOffset: 4
+    }
+  ]
+}));
+
+const chartOptions = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: {
+    legend: {
+      position: 'bottom' as const,
+      labels: {
+        usePointStyle: true,
+        padding: 20,
+        font: {
+          size: 12
+        }
+      }
+    }
+  },
+  cutout: '70%'
+};
+
+const formatCurrency = (val: number) => {
+  return val.toLocaleString('es-ES', { style: 'currency', currency: 'EUR' });
+};
 </script>
 
 <template>
-  <section class="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
-    <article
-      class="relative overflow-hidden rounded-[2rem] border border-slate-200 bg-gradient-to-br from-brand-50 via-white to-emerald-50 p-8 shadow-sm transition-all duration-300 dark:border-white/10 dark:from-zinc-900 dark:via-zinc-900 dark:to-zinc-800 dark:shadow-soft"
-    >
-      <div class="relative z-10">
-        <div class="flex items-center gap-2 text-sm font-bold uppercase tracking-[0.24em] text-brand-600 dark:text-zinc-300">
-          <Rocket class="h-4 w-4" />
-          <span>Inicio del Proyecto</span>
-        </div>
-        <h2 class="mt-4 max-w-3xl text-4xl font-semibold tracking-tight text-slate-900 dark:text-zinc-50 sm:text-5xl">
-          {{ env.appTitle }} esta listo para crecer.
-        </h2>
-        <p class="mt-5 max-w-2xl text-base leading-7 text-slate-600 dark:text-zinc-300">
-          Esta vista inicial es un punto de partida limpio. El valor real esta en la
-          arquitectura de la aplicacion: modulos por dominio, estado aislado, rutas componibles y un diseno espectacular.
-        </p>
-
-        <div class="mt-8 flex flex-wrap gap-3 text-sm text-slate-700 dark:text-zinc-200">
-          <span class="flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-4 py-2 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-600 dark:border-white/10 dark:bg-zinc-800/70 dark:hover:border-white/20 dark:hover:text-zinc-100"><Code class="h-4 w-4" /> Vue 3</span>
-          <span class="flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-4 py-2 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-600 dark:border-white/10 dark:bg-zinc-800/70 dark:hover:border-white/20 dark:hover:text-zinc-100"><Layers class="h-4 w-4" /> TypeScript</span>
-          <span class="flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-4 py-2 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-600 dark:border-white/10 dark:bg-zinc-800/70 dark:hover:border-white/20 dark:hover:text-zinc-100"><Blocks class="h-4 w-4" /> Pinia</span>
-          <span class="flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-4 py-2 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-600 dark:border-white/10 dark:bg-zinc-800/70 dark:hover:border-white/20 dark:hover:text-zinc-100"><Layout class="h-4 w-4" /> TailwindCSS</span>
-        </div>
-      </div>
-
-      <Layers class="absolute -bottom-10 -right-10 h-64 w-64 text-brand-500/5 pointer-events-none dark:text-white/10" />
-    </article>
-
-    <aside class="grid gap-4">
-      <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition-colors duration-300 dark:border-white/10 dark:bg-zinc-900/80 dark:shadow-soft">
-        <p class="text-sm font-bold uppercase tracking-[0.18em] text-brand-500 dark:text-zinc-300">Proximos Pasos</p>
-        <h3 class="mt-3 text-xl font-semibold text-slate-800 dark:text-zinc-50">Dominios Sugeridos</h3>
-        <ul class="mt-4 space-y-3 text-sm leading-6 text-slate-600 dark:text-zinc-300">
-          <li class="flex items-center gap-3">
-            <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-100 text-emerald-600 dark:bg-zinc-800 dark:text-zinc-200">
-              <Activity class="h-4 w-4" />
-            </div>
-            Cuentas y balance consolidado
-          </li>
-          <li class="flex items-center gap-3">
-            <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-100 text-brand-600 dark:bg-zinc-800 dark:text-zinc-200">
-              <CreditCard class="h-4 w-4" />
-            </div>
-            Movimientos y categorizacion
-          </li>
-          <li class="flex items-center gap-3">
-            <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-purple-100 text-purple-600 dark:bg-zinc-800 dark:text-zinc-200">
-              <PieChart class="h-4 w-4" />
-            </div>
-            Presupuestos y reportes
-          </li>
-        </ul>
-      </div>
-
-      <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition-colors duration-300 dark:border-white/10 dark:bg-zinc-900/80 dark:shadow-soft">
-        <div class="flex items-center gap-2">
-          <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-100 text-amber-600 dark:bg-zinc-800 dark:text-zinc-200">
-            <Blocks class="h-4 w-4" />
+  <div class="space-y-8">
+    <!-- Top Stats -->
+    <div class="grid gap-6 md:grid-cols-3">
+      <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition-all dark:border-white/10 dark:bg-slate-900/50">
+        <div class="flex items-center gap-3 text-brand-600 dark:text-brand-400">
+          <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-50 dark:bg-brand-500/10">
+            <Activity class="h-5 w-5" />
           </div>
-          <p class="text-sm font-bold uppercase tracking-[0.18em] text-amber-600 dark:text-zinc-300">Arquitectura</p>
+          <span class="text-sm font-bold uppercase tracking-wider">Patrimonio Neto</span>
         </div>
-        <h3 class="mt-3 text-xl font-semibold text-slate-800 dark:text-zinc-50">Modulo de Autenticacion</h3>
-        <p class="mt-3 text-sm leading-6 text-slate-600 dark:text-zinc-300">
-          El proyecto trae una feature de autenticacion minima lista para integrarse para mostrar organizacion de codigo.
+        <p class="mt-4 text-3xl font-black text-slate-900 dark:text-white">
+          {{ formatCurrency(dashboardStore.netWorth) }}
         </p>
       </div>
-    </aside>
-  </section>
+
+      <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition-all dark:border-white/10 dark:bg-slate-900/50">
+        <div class="flex items-center gap-3 text-emerald-600 dark:text-emerald-400">
+          <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 dark:bg-emerald-500/10">
+            <Wallet class="h-5 w-5" />
+          </div>
+          <span class="text-sm font-bold uppercase tracking-wider">Liquidez</span>
+        </div>
+        <p class="mt-4 text-3xl font-black text-slate-900 dark:text-white">
+          {{ formatCurrency(dashboardStore.totalBalance) }}
+        </p>
+      </div>
+
+      <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition-all dark:border-white/10 dark:bg-slate-900/50">
+        <div class="flex items-center gap-3 text-purple-600 dark:text-purple-400">
+          <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-purple-50 dark:bg-purple-500/10">
+            <TrendingUp class="h-5 w-5" />
+          </div>
+          <span class="text-sm font-bold uppercase tracking-wider">Inversiones</span>
+        </div>
+        <p class="mt-4 text-3xl font-black text-slate-900 dark:text-white">
+          {{ formatCurrency(dashboardStore.totalInvestments) }}
+        </p>
+      </div>
+    </div>
+
+    <div class="grid gap-8 lg:grid-cols-[1fr_350px]">
+      <!-- Recent Activity -->
+      <section class="space-y-4">
+        <div class="flex items-center justify-between">
+          <h3 class="text-xl font-bold text-slate-800 dark:text-white">Actividad Reciente</h3>
+          <router-link :to="{ name: 'transactions' }" class="text-sm font-medium text-brand-600 hover:underline dark:text-brand-400">Ver todo</router-link>
+        </div>
+        
+        <div class="rounded-3xl border border-slate-200 bg-white shadow-sm dark:border-white/10 dark:bg-slate-900/50">
+          <ul v-if="dashboardStore.recentActivity.length > 0" class="divide-y divide-slate-100 dark:divide-white/5">
+            <li v-for="tx in dashboardStore.recentActivity" :key="tx.id" class="flex items-center justify-between p-4">
+              <div class="flex items-center gap-4">
+                <div :class="[
+                  'flex h-10 w-10 items-center justify-center rounded-full',
+                  tx.amount < 0 ? 'bg-rose-50 text-rose-600 dark:bg-rose-500/10 dark:text-rose-400' : 'bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400'
+                ]">
+                  <ArrowDownRight v-if="tx.amount < 0" class="h-5 w-5" />
+                  <ArrowUpRight v-else class="h-5 w-5" />
+                </div>
+                <div>
+                  <p class="font-bold text-slate-900 dark:text-white">{{ tx.description || tx.category_name }}</p>
+                  <p class="text-xs text-slate-500 dark:text-slate-400">{{ tx.date }} • {{ tx.category_name }}</p>
+                </div>
+              </div>
+              <span :class="['font-bold', tx.amount < 0 ? 'text-slate-900 dark:text-white' : 'text-emerald-600 dark:text-emerald-400']">
+                {{ formatCurrency(tx.amount) }}
+              </span>
+            </li>
+          </ul>
+          <div v-else class="py-12 text-center text-slate-500 dark:text-slate-400">
+            Sin actividad reciente.
+          </div>
+        </div>
+      </section>
+
+      <!-- Distribution Chart -->
+      <section class="space-y-4">
+        <div class="flex items-center gap-2">
+          <PieChartIcon class="h-5 w-5 text-brand-500" />
+          <h3 class="text-xl font-bold text-slate-800 dark:text-white">Gastos del Mes</h3>
+        </div>
+        
+        <div class="flex h-[350px] flex-col items-center justify-center rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-slate-900/50">
+          <div v-if="dashboardStore.categoryDistribution.length > 0" class="relative h-full w-full">
+            <Doughnut :data="chartData" :options="chartOptions" />
+          </div>
+          <div v-else class="text-center text-slate-500 dark:text-slate-400">
+            Sin datos de gastos este mes.
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
 </template>

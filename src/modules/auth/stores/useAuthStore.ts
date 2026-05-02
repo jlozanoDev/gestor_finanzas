@@ -13,8 +13,16 @@ interface AuthState {
 
 export const useAuthStore = defineStore('auth', {
   state: (): AuthState => ({
-    session: null,
-    status: 'idle',
+    // Simulate being logged in locally
+    session: {
+      token: 'local-offline-token',
+      user: {
+        id: 'local-user',
+        name: 'Usuario Local',
+        email: 'local@atlasfinanzas.app',
+      }
+    },
+    status: 'success',
     error: null,
   }),
   getters: {
@@ -39,7 +47,7 @@ export const useAuthStore = defineStore('auth', {
       }
     },
     signOut() {
-      this.session = null;
+      // In offline mode, sign out just resets to local user, or we can leave it as is.
       this.status = 'idle';
       this.error = null;
     },

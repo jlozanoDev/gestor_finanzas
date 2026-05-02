@@ -2,7 +2,7 @@
 import { computed } from 'vue';
 import { RouterLink, RouterView, useRoute } from 'vue-router';
 import { useDark, useToggle } from '@vueuse/core';
-import { Sun, Moon, LayoutDashboard, LogIn } from 'lucide-vue-next';
+import { Sun, Moon, LayoutDashboard, LogIn, Wallet, ListCollapse, TrendingUp } from 'lucide-vue-next';
 
 import { env } from '@/shared/config/env';
 
@@ -10,6 +10,9 @@ const route = useRoute();
 
 const navigation = [
   { label: 'Inicio', to: { name: 'home' }, icon: LayoutDashboard },
+  { label: 'Cuentas', to: { name: 'accounts' }, icon: Wallet },
+  { label: 'Movimientos', to: { name: 'transactions' }, icon: ListCollapse },
+  { label: 'Inversiones', to: { name: 'investments' }, icon: TrendingUp },
   { label: 'Acceso', to: { name: 'auth-sign-in' }, icon: LogIn },
 ];
 
