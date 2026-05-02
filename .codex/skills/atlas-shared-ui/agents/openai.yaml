@@ -1,0 +1,4 @@
+interface:
+  display_name: "Atlas Shared UI"
+  short_description: "Diseñar y refinar UI reutilizable"
+  default_prompt: "Use $atlas-shared-ui to create or refine reusable UI patterns in Atlas Finanzas."
